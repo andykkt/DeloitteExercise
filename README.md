@@ -26,3 +26,7 @@ This project does not need any external libraries, please just open `Flickr.xcod
 ![](<https://github.com/andykkt/DeloitteExercise/blob/main/Documents/screenshot_search.png>)
 ![](<https://github.com/andykkt/DeloitteExercise/blob/main/Documents/screenshot_colums.png>)
 
+# Known issues
+- Detail view should download original image and show
+- More error handling is needed
+- Purgable cache should be implemented for images
