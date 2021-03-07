@@ -50,7 +50,7 @@ struct PhotoDetailView: View {
                             .padding(.all, 20)
                     })
                 }
-                .padding(.all, 20)
+                .padding(.horizontal, 20)
                 
                 Spacer()
             }
