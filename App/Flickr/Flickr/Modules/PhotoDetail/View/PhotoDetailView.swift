@@ -65,86 +65,84 @@ struct PhotoDetailView: View {
     }
     
     private var carouselView: some View {
-        GeometryReader { geometry in
-            VStack {
-                HStack(spacing: Constant.spacing) {
-                    ForEach(viewModel.photos) { photo in
-                        VStack {
-                            HStack {
-                                Text("\(photo.photo.ownername ?? "Unknown")")
-                                    .foregroundColor(.white)
-                                    .flickrFont(style: .body)
-                                
-                                Spacer()
-                            }
-                            .padding(.all, 20)
-                            
-                            PhotoView(viewModel: photo)
-                            
-                            Spacer()
-                            
-                            HStack {
-                                Text("\(photo.photo.title)")
-                                    .foregroundColor(.white)
-                                    .flickrFont(style: .body)
-                                    .lineLimit(1)
-                                
-                                Spacer()
-                            }
-                            .padding()
+        VStack {
+            HStack(spacing: Constant.spacing) {
+                ForEach(viewModel.photos) { photo in
+                    VStack {
+                        HStack {
+                            Text("\(photo.photo.ownername ?? "Unknown")")
+                                .foregroundColor(.white)
+                                .flickrFont(style: .body)
                             
                             Spacer()
                         }
-                        .background(Color.mainBackground)
-                        .id(photo.photo.id)
-                        .frame(width: screenWidth)
-                        .offset(x: offsetX)
-                        .highPriorityGesture(
-                            DragGesture()
-                                .onChanged({ (value) in
-                                    if value.translation.width > 0 {
-                                        offsetX = value.location.x
-                                    } else {
-                                        offsetX = value.location.x - screenWidth
-                                    }
-                                })
-                                .onEnded({ (value) in
-                                    if value.translation.width > 0 {
-                                        if value.translation.width > ((screenWidth - Constant.minDistance) / 2) && Int(count) != 0 {
-                                            count -= 1
-                                            offsetX = -((screenWidth + Constant.spacing) * count)
-                                        } else {
-                                            offsetX = -((screenWidth + Constant.spacing) * count)
-                                        }
-                                    } else {
-                                        if -value.translation.width > ((screenWidth - Constant.minDistance) / 2) && Int(count) != (viewModel.photos.count - 1) {
-                                            count += 1
-                                            offsetX = -((screenWidth + Constant.spacing) * count)
-                                        } else {
-                                            offsetX = -((screenWidth + Constant.spacing) * count)
-                                        }
-                                    }
-                                })
-                        )
+                        .padding(.all, 20)
+                        
+                        PhotoView(viewModel: photo)
+                        
+                        Spacer()
+                        
+                        HStack {
+                            Text("\(photo.photo.title)")
+                                .foregroundColor(.white)
+                                .flickrFont(style: .body)
+                                .lineLimit(1)
+                            
+                            Spacer()
+                        }
+                        .padding()
+                        
+                        Spacer()
                     }
-                    
-                    Spacer()
+                    .background(Color.mainBackground)
+                    .id(photo.photo.id)
+                    .frame(width: screenWidth)
+                    .offset(x: offsetX)
+                    .highPriorityGesture(
+                        DragGesture()
+                            .onChanged({ (value) in
+                                if value.translation.width > 0 {
+                                    offsetX = value.location.x
+                                } else {
+                                    offsetX = value.location.x - screenWidth
+                                }
+                            })
+                            .onEnded({ (value) in
+                                if value.translation.width > 0 {
+                                    if value.translation.width > ((screenWidth - Constant.minDistance) / 2) && Int(count) != 0 {
+                                        count -= 1
+                                        offsetX = -((screenWidth + Constant.spacing) * count)
+                                    } else {
+                                        offsetX = -((screenWidth + Constant.spacing) * count)
+                                    }
+                                } else {
+                                    if -value.translation.width > ((screenWidth - Constant.minDistance) / 2) && Int(count) != (viewModel.photos.count - 1) {
+                                        count += 1
+                                        offsetX = -((screenWidth + Constant.spacing) * count)
+                                    } else {
+                                        offsetX = -((screenWidth + Constant.spacing) * count)
+                                    }
+                                }
+                            })
+                    )
                 }
-                .frame(width: UIScreen.main.bounds.width)
-                .offset(x: position)
-                .animation(hasAnimation ? .spring() : .none)
+                
+                Spacer()
             }
-            .onAppear() {
-                position = ((screenWidth + Constant.spacing) * CGFloat(viewModel.photos.count / 2)) - (viewModel.photos.count % 2 == 0 ? ((screenWidth) / 2) - Constant.spacing : 0)
-                print("position: \(position)")
-                
-                let index = CGFloat(viewModel.indexOfSelected())
-                count = index
-                offsetX = -((screenWidth + Constant.spacing) * count)
-                
-                DispatchQueue.main.async {
-                    hasAnimation = true
-                }
+            .frame(width: UIScreen.main.bounds.width)
+            .offset(x: position)
+            .animation(hasAnimation ? .spring() : .none)
+        }
+        .onAppear() {
+            position = ((screenWidth + Constant.spacing) * CGFloat(viewModel.photos.count / 2)) - (viewModel.photos.count % 2 == 0 ? ((screenWidth) / 2) - Constant.spacing : 0)
+            print("position: \(position)")
+            
+            let index = CGFloat(viewModel.indexOfSelected())
+            count = index
+            offsetX = -((screenWidth + Constant.spacing) * count)
+            
+            DispatchQueue.main.async {
+                hasAnimation = true
             }
         }
     }

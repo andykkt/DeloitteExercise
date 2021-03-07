@@ -38,6 +38,7 @@ struct MainView: View {
                     Spacer()
                     
                     contentView
+                        .accessibility(label: Text("List of photos"))
                 }
             }
             .background(FlickrBackground())
@@ -82,6 +83,7 @@ extension MainView {
                 Text(viewModel.lastSearchedText)
                     .foregroundColor(.white)
                     .flickrFont(style: .title)
+                    .accessibility(label: Text("Searched text title"))
                 
                 Spacer()
             }
@@ -104,6 +106,7 @@ extension MainView {
                     })
                     .padding(.horizontal, 20)
                     .transition(.opacity)
+                    .accessibility(label: Text("Trigger to show search input text field"))
                 }
             }
         }
@@ -136,13 +139,16 @@ extension MainView {
     private var listView: some View {
         GeometryReader { geometry in
             ScrollViewOffset { proxy in
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())],
+                LazyVGrid(columns: [GridItem(.flexible()),
+                                    GridItem(.flexible()),
+                                    GridItem(.flexible())],
                           content: {
                             ForEach(viewModel.dataSource) { photo in
+                                let detailViewModel = PhotoDetailViewModel(dataProvider: viewModel.dataProvider,
+                                                                     photos: viewModel.dataSource,
+                                                                     selected: photo)
                                 NavigationLink(
-                                    destination: PhotoDetailView(viewModel: PhotoDetailViewModel(dataProvider: viewModel.dataProvider,
-                                                                                                 photos: viewModel.dataSource,
-                                                                                                 selected: photo)),
+                                    destination: PhotoDetailView(viewModel: detailViewModel),
                                     label: {
                                         PhotoView(viewModel: photo)
                                     })
@@ -158,6 +164,7 @@ extension MainView {
                                         viewModel.lastSelection = nil
                                     }
                                 }
+                                .accessibility(hidden: true)
                             }
                           })
                 

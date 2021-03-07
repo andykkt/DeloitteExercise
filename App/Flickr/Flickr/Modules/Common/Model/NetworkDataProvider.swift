@@ -26,7 +26,7 @@ class NetworkDataProvider: DataProvidable {
         return URLSession.shared.dataTaskPublisher(for: imageURL)
             .map { $0.data }
             .mapError { error in
-                .network(description: "")
+                .network(description: error.localizedDescription)
             }
             .eraseToAnyPublisher()
     }
