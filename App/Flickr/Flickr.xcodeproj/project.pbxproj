@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A11DBD4125F229D1004ACEE4 /* FlickrTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11DBD4025F229D1004ACEE4 /* FlickrTests.swift */; };
 		A11DBD4C25F229D1004ACEE4 /* FlickrUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11DBD4B25F229D1004ACEE4 /* FlickrUITests.swift */; };
 		A11DBD8125F22B49004ACEE4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A11DBD6125F22B49004ACEE4 /* Assets.xcassets */; };
 		A11DBD8225F22B49004ACEE4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A11DBD6325F22B49004ACEE4 /* Preview Assets.xcassets */; };
@@ -93,7 +92,6 @@
 /* Begin PBXFileReference section */
 		A11DBD2B25F229CF004ACEE4 /* Flickr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flickr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A11DBD3C25F229D1004ACEE4 /* FlickrTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlickrTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A11DBD4025F229D1004ACEE4 /* FlickrTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrTests.swift; sourceTree = "<group>"; };
 		A11DBD4225F229D1004ACEE4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A11DBD4725F229D1004ACEE4 /* FlickrUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlickrUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A11DBD4B25F229D1004ACEE4 /* FlickrUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrUITests.swift; sourceTree = "<group>"; };
@@ -213,7 +211,6 @@
 			isa = PBXGroup;
 			children = (
 				A1800BA625F4D3450093D040 /* Common */,
-				A11DBD4025F229D1004ACEE4 /* FlickrTests.swift */,
 				A11DBD4225F229D1004ACEE4 /* Info.plist */,
 				A1800B7425F4C7190093D040 /* MockData */,
 				A1800B9225F4D0B70093D040 /* MockDataLoader.swift */,
@@ -755,7 +752,6 @@
 				A187BB4225F4F3F0000CC4CC /* AppStateTests.swift in Sources */,
 				A1800B9325F4D0B70093D040 /* MockDataProvider.swift in Sources */,
 				A187BB3525F4E2E2000CC4CC /* MockNetworkHandlerProvider.swift in Sources */,
-				A11DBD4125F229D1004ACEE4 /* FlickrTests.swift in Sources */,
 				A187BB3A25F4E799000CC4CC /* URLProtocolMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
