@@ -28,7 +28,7 @@ struct LoadingView<Content>: View where Content: View {
                 
                 Text(title)
                     .foregroundColor(.black)
-                    .markProFont(style: .body)
+                    .flickrFont(style: .body)
                     .padding(.top, 10)
             }
             .padding(.all, 60)

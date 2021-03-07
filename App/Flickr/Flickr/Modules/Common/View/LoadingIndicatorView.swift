@@ -25,7 +25,9 @@ struct LoadingIndicatorView: View {
                 .frame(width: size, height: size, alignment: .center)
         }
         .onAppear {
-            self.shouldAnimate = true
+            DispatchQueue.main.async {
+                self.shouldAnimate = true
+            }
         }
     }
 }

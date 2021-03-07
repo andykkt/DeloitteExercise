@@ -10,8 +10,9 @@ import SwiftUI
 struct InputTextField: UIViewRepresentable {
     let placeholder: String
     @Binding var text: String
+    var onReturn: (() -> Bool)?
     
-    private var placeholderColor: UIColor = UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)
+    private var placeholderColor: UIColor = UIColor.placeholderText// UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)
     private var textContentType: UITextContentType?
     private var clearButtonMode: UITextField.ViewMode = .whileEditing
     private var keyboardType: UIKeyboardType = .default
@@ -23,9 +24,10 @@ struct InputTextField: UIViewRepresentable {
     private var paddingLeft: CGFloat?
     private var paddingRight: CGFloat?
     
-    init(_ placeholder: String, text: Binding<String>) {
+    init(_ placeholder: String, text: Binding<String>, onReturn: (() -> Bool)? = nil) {
         self.placeholder = placeholder
         self._text = text
+        self.onReturn = onReturn
     }
     
     func makeCoordinator() -> Coordinator {
@@ -44,7 +46,9 @@ struct InputTextField: UIViewRepresentable {
     func updateUIView(_ uiView: UITextField, context: Context) {
         uiView.text = text
         update(uiView)
-        if uiView.window != nil, !uiView.isFirstResponder {
+        if uiView.window != nil,
+           !uiView.isFirstResponder
+        {
             uiView.becomeFirstResponder()
         }
     }
@@ -71,7 +75,7 @@ struct InputTextField: UIViewRepresentable {
             textField.paddingRight = paddingRight
         }
     }
-
+    
     class Coordinator: NSObject, UITextFieldDelegate {
         var parent: InputTextField
         init(_ inputTextField: InputTextField) {
@@ -80,6 +84,16 @@ struct InputTextField: UIViewRepresentable {
         
         func textFieldDidChangeSelection(_ textField: UITextField) {
             parent.text = textField.text ?? ""
+        }
+        
+        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            if let onReturn = parent.onReturn {
+                let shouldReturn = onReturn()
+                if shouldReturn {
+                    textField.resignFirstResponder()
+                }
+            }
+            return true
         }
     }
 }
@@ -101,14 +115,13 @@ extension InputTextField {
         }
     }
     
-    func markProFont(style: MarkProFontModifier.TextStyle) -> InputTextField {
+    func flickrFont(style: FlickrFontModifier.TextStyle) -> InputTextField {
         let descriptor = UIFontDescriptor(fontAttributes:
-            [
-                UIFontDescriptor.AttributeName.family: "MarkPro",
-                UIFontDescriptor.AttributeName.traits: [
-                    UIFontDescriptor.TraitKey.weight: fontWeight(style.value.weight)
-                ]
-            ]
+                                            [
+                                                UIFontDescriptor.AttributeName.traits: [
+                                                    UIFontDescriptor.TraitKey.weight: fontWeight(style.value.weight)
+                                                ]
+                                            ]
         )
         var view = self
         view.font = UIFont(descriptor: descriptor, size: style.value.size)
@@ -126,7 +139,7 @@ extension InputTextField {
         view.font = font ?? UIFont.preferredFont(forTextStyle: .body)
         return view
     }
-
+    
     func textContentType(_ type: UITextContentType) -> InputTextField {
         var view = self
         view.textContentType = type
@@ -197,7 +210,7 @@ extension UITextField {
             leftViewMode = .always
         }
     }
-
+    
     var paddingRight: CGFloat {
         get {
             return rightView!.frame.size.width
@@ -212,12 +225,15 @@ extension UITextField {
 
 struct InputTextField_Previews: PreviewProvider {
     static var previews: some View {
-        InputTextField("Input", text: .constant(""))
-            .keyboardType(.emailAddress)
-            .markProFont(style: .accentBody)
-            .padding()
-            .background(Color.gray.opacity(0.5))
-            .frame(height: 40)
+        InputTextField("Input", text: .constant("")) {
             
+            return true
+        }
+        .keyboardType(.emailAddress)
+        .flickrFont(style: .body)
+        .padding()
+        .background(Color.gray.opacity(0.5))
+        .frame(height: 40)
+        
     }
 }

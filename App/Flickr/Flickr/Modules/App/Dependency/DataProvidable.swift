@@ -17,5 +17,12 @@ protocol DataProvidable {
     
     // MARK: - MainAPI
     
-    func search(for text: String) -> AnyPublisher<MainAPI.Search.Response, DataError>
+    func search(for text: String, page: Int, perPage: Int) -> AnyPublisher<MainAPI.Search.Response, DataError>
+    func getImage(from url: String) -> AnyPublisher<Data, DataError>
+}
+
+extension DataProvidable {
+    func search(for text: String, page: Int) -> AnyPublisher<MainAPI.Search.Response, DataError> {
+        return search(for: text, page: page, perPage: 100)
+    }
 }

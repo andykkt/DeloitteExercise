@@ -28,5 +28,6 @@ enum Flickr {
         case Medium800 = "url_c"
         case Large = "url_l"
         case Original = "url_o"
+        case OwnerName = "owner_name"
     }
 }

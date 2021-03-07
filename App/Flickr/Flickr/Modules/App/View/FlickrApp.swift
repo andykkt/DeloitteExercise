@@ -18,7 +18,7 @@ struct FlickrApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainView(viewModel: MainViewModel(dataProvider: NetworkDataProvider()))
+            RootView(viewModel: RootViewModel(dataProvider: DependencyMap.dataProvider))
                 .environmentObject(appState)
         }
     }

@@ -25,6 +25,27 @@ class AppState: NSObject, ObservableObject {
         super.init()
     }
     
+    // MARK: - Public Functions
+    
+    func onboarded() {
+        isOnboarded = true
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            withAnimation {
+                self.state = .main
+            }
+        }
+    }
+    
+    func load() {
+        withAnimation(.easeInOut(duration: 1.5)) {
+            if isOnboarded {
+                self.state = .main
+            } else {
+                self.state = .onboarding
+            }
+        }
+    }
 }
 
 #if DEBUG

@@ -148,7 +148,7 @@ extension Requestable {
     }
     
     static func handler(for configuration: URLSessionConfiguration) -> NetworkHandler {
-        return URLSession(configuration: configuration, delegate: nil, delegateQueue: nil)
+        return DependencyMap.networkHandlerProvider.makeSession(configuration, delegate: nil, delegateQueue: nil)
     }
     
     static var parameterEncoding: Request.ParameterEncoding {

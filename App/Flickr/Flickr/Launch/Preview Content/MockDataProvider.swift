@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import UIKit
 
 class MockDataProvider: DataProvidable {
     
@@ -17,14 +18,22 @@ class MockDataProvider: DataProvidable {
         case failed
     }
     
+    enum PhotoResponseType: String {
+        case success = "PhotoResponse"
+        case failed
+    }
+    
     // MARK: - Private Variables
     
     private var searchResponseType: SearchResponseType
+    private var photoResponseType: PhotoResponseType
     
     // MARK: - Init
     
-    init(searchResponseType: SearchResponseType = .success) {
+    init(searchResponseType: SearchResponseType = .success,
+         photoResponseType: PhotoResponseType = .success) {
         self.searchResponseType = searchResponseType
+        self.photoResponseType = photoResponseType
     }
     
     // MARK: - Private Functions
@@ -72,7 +81,7 @@ class MockDataProvider: DataProvidable {
     
     // MARK: - DataProvidable
     
-    func search(for text: String) -> AnyPublisher<MainAPI.Search.Response, DataError> {
+    func search(for text: String, page: Int, perPage: Int = 50) -> AnyPublisher<MainAPI.Search.Response, DataError> {
         if searchResponseType == .failed {
             let error = DataError.network(description: "Failed to request")
             return Fail(error: error).eraseToAnyPublisher()
@@ -82,4 +91,24 @@ class MockDataProvider: DataProvidable {
         return load(searchResponseType.rawValue, decoder)
     }
     
+    func getImage(from url: String) -> AnyPublisher<Data, DataError> {
+        if photoResponseType == .failed {
+            let error = DataError.network(description: "Failed to request")
+            return Fail(error: error).eraseToAnyPublisher()
+        }
+        guard let path = Bundle(for: type(of: self)).url(forResource: photoResponseType.rawValue, withExtension: "jpeg") else {
+            let error = DataError.network(description: "Couldn't locate mock data")
+            return Fail(error: error).eraseToAnyPublisher()
+        }
+        guard let data = try? Data(contentsOf: path) else {
+            let error = DataError.network(description: "Failed to decode")
+            return Fail(error: error).eraseToAnyPublisher()
+        }
+        return Just(data)
+            .mapError { error in
+                .parsing(description: error.localizedDescription)
+            }
+            .delay(for: 1.3, scheduler: RunLoop.main)
+            .eraseToAnyPublisher()
+    }
 }

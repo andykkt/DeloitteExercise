@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: - Constants
 
 class AppConstants {
-    static var apiKey: String = "96358825614a5d3b1a1c3fd87fca2b47"
+    static var apiKey: String = "043a35289f019f2c229cefce0d4d4976"
     static var apiBaseURL: String = "https://api.flickr.com"
 }
 
@@ -21,38 +21,20 @@ enum AppStorageKey {
 
 extension Color {
     static let mainBackground = Color("mainBackground")
+    static let flickrPink = Color("flickrPink")
+    static let flickrBlue = Color("flickrBlue")
 }
 
-struct MarkProFontModifier: ViewModifier {
+struct FlickrFontModifier: ViewModifier {
     enum TextStyle {
-        case title, body, button, smallButton, smallBody, accentBody,
-             alertTitle, mainCategory, subCategory,
-             transcriptionBody, transcriptionSmall, timeStamp, timeStampSmall, accentSmall,
-             inputTitle, sectionTitle, notificationTitle, notificationBody,
-             smallMainCategory, smallSubCategory, termsAndConditionBody
+        case logo, title, body, caption, button
         var value: (size: CGFloat, weight: Font.Weight) {
             switch self {
             case .title: return (17, .bold)
             case .body: return (14, .regular)
+            case .caption: return (12, .regular)
             case .button: return (14, .bold)
-            case .smallBody: return (12, .regular)
-            case .smallButton: return (12, .bold)
-            case .accentBody: return (13, .medium)
-            case .accentSmall: return (13, .regular)
-            case .alertTitle: return (16, .bold)
-            case .mainCategory: return (14, .bold)
-            case .subCategory: return (14, .regular)
-            case .transcriptionBody: return (16, .medium)
-            case .transcriptionSmall: return (10, .medium)
-            case .timeStamp: return (12, .medium)
-            case .timeStampSmall: return (10, .medium)
-            case .inputTitle: return (16, .regular)
-            case .sectionTitle: return (26, .heavy)
-            case .notificationBody: return (17, .regular)
-            case .notificationTitle: return (22, .bold)
-            case .smallMainCategory: return (12, .bold)
-            case .smallSubCategory: return (12, .regular)
-            case .termsAndConditionBody: return (16, .regular)
+            case .logo: return (32, .medium)
             }
         }
     }
@@ -60,30 +42,12 @@ struct MarkProFontModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .font(Font.custom("MarkPro", size: style.value.size).weight(style.value.weight))
-        
-    }
-    
-    static func getUIFont(style: TextStyle) -> UIFont {
-        let fontName: String
-        switch style.value.weight {
-        case .ultraLight: fontName = "MarkPro-Thin"
-        case .thin: fontName = "MarkPro-Thin"
-        case .light: fontName = "MarkPro-Thin"
-        case .regular: fontName = "MarkPro"
-        case .medium: fontName = "MarkPro-Medium"
-        case .semibold: fontName = "MarkPro-Medium"
-        case .bold: fontName = "MarkPro-Bold"
-        case .heavy: fontName = "MarkPro-Heavy"
-        case .black: fontName = "MarkPro-Black"
-        default: fontName = "MarkPro"
-        }
-        return UIFont(name: fontName, size: style.value.size) ?? UIFont.systemFont(ofSize: style.value.size)
+            .font(.system(size: style.value.size, weight: style.value.weight, design: .default))
     }
 }
 
 extension View {
-    func markProFont(style: MarkProFontModifier.TextStyle) -> some View {
-        self.modifier(MarkProFontModifier(style: style))
+    func flickrFont(style: FlickrFontModifier.TextStyle) -> some View {
+        self.modifier(FlickrFontModifier(style: style))
     }
 }

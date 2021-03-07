@@ -40,13 +40,13 @@ struct ErrorView<Content>: View where Content: View {
                     
                     if let title = title {
                         Text(title)
-                            .markProFont(style: .alertTitle)
+                            .flickrFont(style: .title)
                             .foregroundColor(.black)
                     }
                     
                     if let description = description {
                         Text(description)
-                            .markProFont(style: .body)
+                            .flickrFont(style: .body)
                             .foregroundColor(.black)
                             .multilineTextAlignment(.center)
                             .lineLimit(nil)
@@ -64,7 +64,7 @@ struct ErrorView<Content>: View where Content: View {
                             
                             Text("OK")
                                 .foregroundColor(.black)
-                                .markProFont(style: .button)
+                                .flickrFont(style: .button)
                         }
                         .padding([.leading, .trailing], 10)
                     }
