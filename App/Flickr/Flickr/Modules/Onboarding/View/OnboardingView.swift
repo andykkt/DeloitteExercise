@@ -21,40 +21,51 @@ struct OnboardingView: View {
                 FlickrBackground()
                     .blur(radius: 52.0)
                 
-                VStack {
-                    Text("Deloitte Flickr")
-                        .foregroundColor(.white)
-                        .flickrFont(style: .logo)
-                    
-                    Text("Simple Flickr Search")
-                        .foregroundColor(.white)
-                        .flickrFont(style: .body)
-
-                    Button(action: {
-                        appState.onboarded()
-                    }, label: {
-                        ZStack {
-                            Rectangle()
-                                .foregroundColor(.yellow)
-                                .frame(height: 44)
-                            
-                            Text("Get started")
-                                .foregroundColor(.black)
-                                .flickrFont(style: .button)
-                        }
-                        .padding([.leading, .trailing], 10)
-                    })
-                    .padding()
+                ScrollView {
+                    messageView
                 }
-                .padding()
-                .background(VisualEffectBlur(blurStyle: .light))
-                .cornerRadius(22.0)
-                .frame(width: geometry.size.width * 0.7)
-                .shadow(radius: 10)
             }
         }
         .background(FlickrBackground())
         .ignoresSafeArea()
+    }
+}
+
+extension OnboardingView {
+    private var messageView: some View {
+        HStack(alignment: .center) {
+            VStack(alignment: .center) {
+                Text("Deloitte Flickr")
+                    .foregroundColor(.white)
+                    .flickrFont(style: .logo)
+                
+                Text("Simple Flickr Search")
+                    .foregroundColor(.white)
+                    .flickrFont(style: .body)
+
+                Button(action: {
+                    appState.onboarded()
+                }, label: {
+                    ZStack {
+                        Rectangle()
+                            .foregroundColor(.yellow)
+                            .frame(height: 44)
+                        
+                        Text("Get started")
+                            .foregroundColor(.black)
+                            .flickrFont(style: .button)
+                    }
+                    .padding([.leading, .trailing], 10)
+                })
+                .padding()
+            }
+            .padding()
+            .background(VisualEffectBlur(blurStyle: .light))
+            .cornerRadius(22.0)
+            .frame(width: UIScreen.main.bounds.width * 0.7)
+            .shadow(radius: 10)
+        }
+        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
     }
 }
 

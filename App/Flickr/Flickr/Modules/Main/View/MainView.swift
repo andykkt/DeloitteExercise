@@ -23,6 +23,7 @@ struct MainView: View {
             viewModel.searchText = ""
         }
     }
+    private let columns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
     
     // MARK: - Content
     
@@ -137,58 +138,52 @@ extension MainView {
     }
     
     private var listView: some View {
-        GeometryReader { geometry in
-            ScrollViewOffset { proxy in
-                LazyVGrid(columns: [GridItem(.flexible()),
-                                    GridItem(.flexible()),
-                                    GridItem(.flexible())],
-                          content: {
-                            ForEach(viewModel.dataSource) { photo in
-                                let detailViewModel = PhotoDetailViewModel(dataProvider: viewModel.dataProvider,
-                                                                     photos: viewModel.dataSource,
-                                                                     selected: photo)
-                                NavigationLink(
-                                    destination: PhotoDetailView(viewModel: detailViewModel),
-                                    label: {
-                                        PhotoView(viewModel: photo)
-                                    })
-                                .id(photo.id)
-                                .background(Color.mainBackground)
-                                .onAppear() {
-                                    if viewModel.isLastItem(photo) {
-                                        viewModel.showPageLoading = true
-                                    }
-                                    
-                                    if let lastSelection = viewModel.lastSelection {
-                                        proxy.scrollTo(lastSelection.id)
-                                        viewModel.lastSelection = nil
-                                    }
-                                }
-                                .accessibility(hidden: true)
+        ScrollViewOffset { proxy in
+            LazyVGrid(columns: columns, content: {
+                ForEach(viewModel.dataSource, id: \.id) { photo in
+                    let detailViewModel = PhotoDetailViewModel(dataProvider: viewModel.dataProvider,
+                                                               photos: viewModel.dataSource,
+                                                               selected: photo)
+                    NavigationLink(
+                        destination: PhotoDetailView(viewModel: detailViewModel),
+                        label: {
+                            PhotoView(viewModel: photo)
+                        })
+                        .background(Color.mainBackground)
+                        .onAppear() {
+                            if viewModel.isLastItem(photo) {
+                                viewModel.showPageLoading = true
                             }
-                          })
-                
-                if viewModel.showPageLoading {
-                    HStack {
-                        Spacer()
-                        LoadingIndicatorView()
-                            .onAppear() {
-                                viewModel.fetchNextPage()
+                            
+                            if let lastSelection = viewModel.lastSelection {
+                                proxy.scrollTo(lastSelection.id)
+                                viewModel.lastSelection = nil
                             }
-                        Spacer()
-                    }
-                    .frame(height: 64)
+                        }
+                        .accessibility(hidden: true)
                 }
-                
-            } onOffsetChange: { offset in
-                if showSearchButton, offset > 88 {
-                    withAnimation() {
-                        showSearchButton = false
-                    }
-                } else if !showSearchButton, offset < -88 {
-                    withAnimation() {
-                        showSearchButton = true
-                    }
+            })
+            
+            if viewModel.showPageLoading {
+                HStack {
+                    Spacer()
+                    LoadingIndicatorView()
+                        .onAppear() {
+                            viewModel.fetchNextPage()
+                        }
+                    Spacer()
+                }
+                .frame(height: 64)
+            }
+            
+        } onOffsetChange: { offset in
+            if showSearchButton, offset > 88 {
+                withAnimation() {
+                    showSearchButton = false
+                }
+            } else if !showSearchButton, offset < -88 {
+                withAnimation() {
+                    showSearchButton = true
                 }
             }
         }
