@@ -19,12 +19,15 @@ struct PhotoDetailView: View {
     // MARK: - ViewModel
     
     @StateObject var viewModel: PhotoDetailViewModel
-    @State var offsetX: CGFloat = 0
-    @State var screenWidth: CGFloat = UIScreen.main.bounds.width - (Constant.spacing * 2)
-    @State var count: CGFloat = 0
-    @State var position: CGFloat = 0
-    @State var hasAnimation: Bool = false
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
+    // MARK: - Private Members
+    
+    @State private var offsetX: CGFloat = 0
+    @State private var screenWidth: CGFloat = UIScreen.main.bounds.width - (Constant.spacing * 2)
+    @State private var count: CGFloat = 0
+    @State private var position: CGFloat = 0
+    @State private var hasAnimation: Bool = false
+    @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     
     // MARK: - Content
     
@@ -54,7 +57,6 @@ struct PhotoDetailView: View {
                 
                 Spacer()
             }
-            
         }
         .onAppear() {
             print("[PhotoDetailView: onAppear]")
@@ -66,7 +68,7 @@ struct PhotoDetailView: View {
     
     private var carouselView: some View {
         VStack {
-            HStack(spacing: Constant.spacing) {
+            LazyHStack(spacing: Constant.spacing) {
                 ForEach(viewModel.photos) { photo in
                     VStack {
                         HStack {
@@ -134,7 +136,7 @@ struct PhotoDetailView: View {
             .animation(hasAnimation ? .spring() : .none)
         }
         .onAppear() {
-            position = ((screenWidth + Constant.spacing) * CGFloat(viewModel.photos.count / 2)) - (viewModel.photos.count % 2 == 0 ? ((screenWidth) / 2) - Constant.spacing : 0)
+            position = ((screenWidth + Constant.spacing) * CGFloat(viewModel.photos.count / 2)) - (viewModel.photos.count % 2 == 0 ? ((screenWidth) / 2) : 0)
             print("position: \(position)")
             
             let index = CGFloat(viewModel.indexOfSelected())
