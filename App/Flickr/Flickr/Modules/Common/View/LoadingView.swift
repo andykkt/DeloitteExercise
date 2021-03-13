@@ -17,8 +17,8 @@ struct LoadingView<Content>: View where Content: View {
                 .disabled(true)
                 .blur(radius: 3)
             
-            Rectangle()
-                .foregroundColor(Color.black.opacity(0.4))
+            Color.black
+                .opacity(0.4)
                 .ignoresSafeArea()
 
             VStack {

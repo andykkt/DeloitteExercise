@@ -47,7 +47,7 @@ enum MainAPI {
                 }
             }
         }
-        
+
         struct Path: PathComponentsProvider {
             var pathComponents: [String] {
                 ["services/rest"]

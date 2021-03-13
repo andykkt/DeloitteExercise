@@ -31,8 +31,7 @@ struct ErrorView<Content>: View where Content: View {
                     .disabled(true)
                     .blur(radius: 3)
                 
-                Rectangle()
-                    .foregroundColor(Color.black.opacity(0.4))
+                Color.black.opacity(0.4)
                     .ignoresSafeArea()
 
                 VStack {
@@ -58,8 +57,7 @@ struct ErrorView<Content>: View where Content: View {
                     
                     Button(action: action) {
                         ZStack {
-                            Rectangle()
-                                .foregroundColor(.yellow)
+                            Color.yellow
                                 .frame(height: 44)
                             
                             Text("OK")

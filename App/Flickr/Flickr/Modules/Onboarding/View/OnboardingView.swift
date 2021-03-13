@@ -47,8 +47,7 @@ extension OnboardingView {
                     appState.onboarded()
                 }, label: {
                     ZStack {
-                        Rectangle()
-                            .foregroundColor(.yellow)
+                        Color.yellow
                             .frame(height: 44)
                         
                         Text("Get started")
